@@ -30,20 +30,28 @@ namespace EasyGalaxySwapper
             button1.Enabled = false;
             button1.Text = "処理中...";
             Process netChecker = new Process();
-            netChecker.StartInfo.FileName = "dotnet.exe";
-            netChecker.StartInfo.Arguments = "--list-runtimes";
-            netChecker.StartInfo.UseShellExecute = false;
-            netChecker.StartInfo.RedirectStandardOutput = true;
-            netChecker.Start();
-            string results = netChecker.StandardOutput.ReadToEnd();
-            netChecker.WaitForExit();
-            netChecker.Close();
-
-            if (results.Contains("Microsoft.WindowsDesktop.App 7.0."))
+            string results;
+            try
             {
-                AllProgress.Value = 50;
-                DownloadGalaxySwapper();
-            } else
+                netChecker.StartInfo.FileName = "dotnet.exe";
+                netChecker.StartInfo.Arguments = "--list-runtimes";
+                netChecker.StartInfo.UseShellExecute = false;
+                netChecker.StartInfo.RedirectStandardOutput = true;
+                netChecker.Start();
+                results = netChecker.StandardOutput.ReadToEnd();
+                netChecker.WaitForExit();
+                netChecker.Close();
+
+                if (results.Contains("Microsoft.WindowsDesktop.App 7.0."))
+                {
+                    AllProgress.Value = 50;
+                    DownloadGalaxySwapper();
+                }
+                else
+                {
+                    InstallNetRuntime();
+                }
+            } catch (Exception)
             {
                 InstallNetRuntime();
             }
