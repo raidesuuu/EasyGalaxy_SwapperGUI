@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -96,7 +97,9 @@ namespace EasyGalaxySwapper
             AllProgress.Value = 75;
             Process.Start(Path.Combine(Directory.GetCurrentDirectory(), "GalaxySwapperV2.exe"));
             HttpClient httpClient = new HttpClient();
-            var response = await httpClient.GetAsync("https://galaxyswapperv2.com/Key/Create.php");
+            var request = new HttpRequestMessage(HttpMethod.Get, "https://galaxyswapperv2.com/Key/Create.php");
+            request.Headers.Add("Referer", "https://lootlinks.co/");
+            var response = await httpClient.SendAsync(request);
             var LicenseKeyParser = HttpUtility.ParseQueryString(response.RequestMessage.RequestUri.Query);
             var LicenseKey = LicenseKeyParser["key"];
             Clipboard.SetText(LicenseKey);
