@@ -1,7 +1,4 @@
-﻿using Cloudflare_Bypass;
-using Fiddler;
-using PuppeteerSharp;
-using System;
+﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,11 +7,10 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-    using System.Net;
+using System.Net;
 using System.Net.Http;
 using System.Security.Policy;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
@@ -104,21 +100,22 @@ namespace EasyGalaxySwapper
             wc.DownloadFileCompleted += Galaxy_DownloadFileCompleted;
         }
 
-        private void Galaxy_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        private async void Galaxy_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            //Start Proxy (lets customize!)
-            Thread thread = new Thread(Listener.Start);
-            thread.Start();
-            Proxy.Start();
-
-            //Run GalaxySwapper
+            AllProgress.Value = 75;
             Process.Start(Path.Combine(Directory.GetCurrentDirectory(), "GalaxySwapperV2.exe"));
+            HttpClient httpClient = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Get, "https://galaxyswapperv2.com/Key/Create.php");
+            request.Headers.Add("Referer", "https://lootlinks.co/");
+            var response = await httpClient.SendAsync(request);
+            var LicenseKeyParser = HttpUtility.ParseQueryString(response.RequestMessage.RequestUri.Query);
+            var LicenseKey = LicenseKeyParser["key"];
+            Clipboard.SetText(LicenseKey);
+            label5.Text = "ライセンスキー: " + LicenseKey + Environment.NewLine + "(クリップボードにコピーしました)";
+            AllProgress.Value = 100;
+            button1.Text = "再実行";
+            button1.Enabled = true;
 
-            DialogResult dialog = MessageBox.Show("GalaxySwapperV2を起動しました。ライセンスを有効にするには、以下の手段が必要になりました。\n1. 適当にライセンスキーを入力し、Activateをクリックします。\n2. GalaxySwapperが認証することを確認します。\n3. 完了したら、OKボタンをクリックします。", "EasyGalaxySwapper : アクションが必要", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            if (dialog == DialogResult.OK)
-            {
-                Fiddler.FiddlerApplication.Shutdown();
-            }
         }
 
         private void Galaxy_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -129,24 +126,6 @@ namespace EasyGalaxySwapper
         private void button2_Click(object sender, EventArgs e)
         {
             Process.Start("https://galaxyswapperv2.com/Discord.php");
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (FiddlerApplication.IsStarted())
-            {
-                FiddlerApplication.Shutdown();
-            }
-            Application.Exit();
         }
     }
 }
