@@ -9,7 +9,7 @@ CUI版: https://github.com/BetakyousoYT/EasyGalaxy_swapper
 5. Galaxy Swapperが開いたら、ライセンスキーを貼り付けます。(自動でコピーされています)
 6. 完了
 ## エラーや問題/改善点がある場合
-Discord「minatoaqua_445」にフレンド申請を送るか、β教祖サーバーでメンションしてください。<br>
+Discord「raic.dev」にフレンド申請を送ってサポートをお願いしてください。<br>
 対応は、DMでの対応となります。(β教祖サーバーのみなさんに迷惑をかけないため)<br>
 [Issues](https://github.com/raisandesu/EasyGalaxy_SwapperGUI/issues)でも報告できますが、対応が遅れる可能性があります。
 ## ソースコードのビルド要件
