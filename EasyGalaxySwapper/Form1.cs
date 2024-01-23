@@ -11,6 +11,7 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Policy;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
@@ -100,32 +101,68 @@ namespace EasyGalaxySwapper
             wc.DownloadFileCompleted += Galaxy_DownloadFileCompleted;
         }
 
-        private async void Galaxy_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        private void Galaxy_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
+            //Change Progress
             AllProgress.Value = 75;
-            Process.Start(Path.Combine(Directory.GetCurrentDirectory(), "GalaxySwapperV2.exe"));
-            HttpClient httpClient = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://galaxyswapperv2.com/Key/Create.php");
-            request.Headers.Add("Referer", "https://lootlinks.co/");
-            var response = await httpClient.SendAsync(request);
-            var LicenseKeyParser = HttpUtility.ParseQueryString(response.RequestMessage.RequestUri.Query);
-            var LicenseKey = LicenseKeyParser["key"];
-            Clipboard.SetText(LicenseKey);
-            label5.Text = "ライセンスキー: " + LicenseKey + Environment.NewLine + "(クリップボードにコピーしました)";
-            AllProgress.Value = 100;
-            button1.Text = "再実行";
-            button1.Enabled = true;
 
+            //Proxy Warning
+            MessageBox.Show("証明書の確認ウインドウが表示されたら、「はい」をクリックしてください。\n「OK」をクリックして処理を続行します。", "注意 : EasyGalaxy Swapper GUI", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+            //Launch "Proxy"
+            Thread thread = new Thread(Listener.Start);
+            thread.Start();
+            Proxy.Start();
+
+            //Launch "Galaxy Swapper"
+            Process.Start(Path.Combine(Directory.GetCurrentDirectory(), "GalaxySwapperV2.exe"));
+
+            //Launch "MessageBox" (Activate Guide)
+            if (!ShowMessageBox()) ShowMessageBox(); else Fiddler.FiddlerApplication.Shutdown();
         }
 
         private void Galaxy_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
+            //Sync Download Progress
             MenuProgress.Value = e.ProgressPercentage;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            //Launch "discord.com" on Default Browser
             Process.Start("https://galaxyswapperv2.com/Discord.php");
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            //
+            if (Fiddler.FiddlerApplication.IsStarted())
+            {
+                Fiddler.FiddlerApplication.Shutdown();
+            }
+            Application.Exit();
+        }
+
+        //MessageBox Handler
+        private bool ShowMessageBox()
+        {
+            //Configure MessageBox
+            string title = "アクションが必要 : EasyGalaxy Swapper GUI";
+            string description =
+                "Galaxy Swapperを認証するには、下記のステップの手段が必要です。\n" +
+                "1. 適当なライセンスキーを入れて、「Activate」をクリックします。\n" +
+                "> 「000000-000000-000000」を使用してはいけません。(空白もNG)\n" +
+                "2. アラートが表示されたら、「OK」をクリックします。\n" +
+                "3. Galaxy Swapperが使用できることを確認します。\n" +
+                "4. 確認できたら、このダイアログで「はい」をクリックしてください。\n" +
+                "「はい」をクリックしない場合、インターネットに接続できなくなる可能性があります。\n" +
+                "間違って強制終了してしまった場合、システム設定からプロキシを無効にしてください。";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo; ;
+            MessageBoxIcon icon = MessageBoxIcon.Warning;
+            MessageBoxOptions options = MessageBoxOptions.DefaultDesktopOnly;
+
+            DialogResult dr = MessageBox.Show(description, title, buttons, icon, MessageBoxDefaultButton.Button1, options);
+            if (dr == DialogResult.Yes) return true; else return false;
         }
     }
 }
