@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34003.232
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyGalaxySwapper", "EasyGalaxySwapper\EasyGalaxySwapper.csproj", "{A68F36E7-7500-4A1F-86B5-C2DCD3777670}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A68F36E7-7500-4A1F-86B5-C2DCD3777670}.Release|x64.ActiveCfg = Release|x64
+		{A68F36E7-7500-4A1F-86B5-C2DCD3777670}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {53D40E97-684C-4E34-9652-AFF759DDE6EA}
+	EndGlobalSection
+EndGlobal
