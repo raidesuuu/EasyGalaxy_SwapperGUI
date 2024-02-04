@@ -13,7 +13,6 @@ namespace EasyGalaxySwapper
         static HttpListener httpListener = new HttpListener();
         public static void Start()
         {
-            HttpListener httpListener = new HttpListener();
             httpListener.Prefixes.Add("http://127.0.0.1:3936/");
             httpListener.Start();
             while (true)

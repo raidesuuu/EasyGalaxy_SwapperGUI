@@ -31,7 +31,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.AllProgress = new System.Windows.Forms.ProgressBar();
             this.label5 = new System.Windows.Forms.Label();
             this.actions_run = new System.Windows.Forms.Button();
             this.link_discord = new System.Windows.Forms.Button();
@@ -67,13 +66,6 @@
             this.label3.TabIndex = 2;
             this.label3.Text = "β教祖が作成したEasyGalaxy SwapperのGUI版です。\r\n製作者には敬意を持ちましょう。";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // AllProgress
-            // 
-            this.AllProgress.Location = new System.Drawing.Point(23, 192);
-            this.AllProgress.Name = "AllProgress";
-            this.AllProgress.Size = new System.Drawing.Size(291, 22);
-            this.AllProgress.TabIndex = 4;
             // 
             // label5
             // 
@@ -118,7 +110,6 @@
             this.Controls.Add(this.link_discord);
             this.Controls.Add(this.actions_run);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.AllProgress);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -140,7 +131,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ProgressBar AllProgress;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button actions_run;
         private System.Windows.Forms.Button link_discord;
